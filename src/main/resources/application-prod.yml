@@ -1,0 +1,10 @@
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  kafka:
+    streams:
+      bootstrap-servers: kafka-prod.lbg.com:9092
+      application-id: codat-data-stream-processor
+

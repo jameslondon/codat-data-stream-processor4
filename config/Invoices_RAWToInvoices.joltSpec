@@ -1,0 +1,12 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "results": {
+        "*": {
+          "*": "invoices[&1].&"
+        }
+      }
+    }
+  }
+]

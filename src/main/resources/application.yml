@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: codat-data-stream-processor
+  profiles:
+    active: local

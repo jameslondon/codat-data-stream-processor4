@@ -1,0 +1,76 @@
+
+spring:
+  kafka:
+    streams:
+      bootstrap-servers: localhost:9092
+      application-id: codat-data-stream-processor
+    properties:
+      default:
+        deserialization:
+          exception:
+#            handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
+            handler: exceptionhandler.com.jil.codat.StreamsDeserializationExceptionHandler
+        production:
+          exception:
+            handler: com.jil.codat.exceptionhandler.StreamsProductionExceptionHandler
+
+data-stream-processor:
+  topics:
+    - consumeTopic: Accounts_RAW
+      produceTopic: Accounts
+      transformationStrategy:
+        transformer: JoltTransformer
+        spec: file:/Users/jialiu9/Documents/Work/LBG-CD&A/codat-data-stream-processor3/config/Accounts_RAWToAccounts.joltSpec
+        filter:
+          companyIds:
+            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          status: Active
+    - consumeTopic: Invoices_RAW
+      produceTopic: Invoices
+      transformationStrategy:
+        transformer: JoltTransformer
+        spec: file:/Users/jialiu9/Documents/Work/LBG-CD&A/codat-data-stream-processor3/config/Accounts_RAWToAccounts.joltSpec
+        filter:
+          companyIds:
+            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          status: Unpaid
+    - consumeTopic: Bills_RAW
+      produceTopic: Bills
+      transformationStrategy:
+        transformer: JoltTransformer
+        spec: file:/Users/jialiu9/Documents/Work/LBG-CD&A/codat-data-stream-processor3/config/Bills_RAWToBills.joltSpec
+        filter:
+          companyIds:
+            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          status: Unpaid
+    - consumeTopic: AccountTransactions_RAW
+      produceTopic: AccountTransactions
+      transformationStrategy:
+        transformer: JoltTransformer
+        spec: file:/Users/jialiu9/Documents/Work/LBG-CD&A/codat-data-stream-processor3/config/AccountTransactions_RAWToAccountTransactions.joltSpec
+        filter:
+          company-id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          status: Unreconciled
+    - consumeTopic: Accounts
+      produceTopic: Accounts_BQ
+      transformationStrategy:
+        transformer: AccountsToAccounts_BQTransformer
+        spec:
+        filter:
+          companyIds:
+            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          status: Unpaid
+    - consumeTopic: Accounts
+      produceTopic: Accounts_CoBa
+      transformationStrategy:
+        transformer: AccountsToAccounts_CoBaTransformer
+        spec:
+        filter:
+          companyIds:
+            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          status:
+    - consumeTopic: Invoices
+      produceTopic: Invoices_CoBa
+      transformationStrategy:
+        transformer: InvoicesToInvoices_CoBaTransformer
+        spec:
