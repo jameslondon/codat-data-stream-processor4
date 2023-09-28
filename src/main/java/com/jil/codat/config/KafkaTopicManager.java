@@ -31,10 +31,10 @@ public class KafkaTopicManager {
                     "Bills",
                     "AccountTransactions",
                     // for BQ Sink connector consumption
-                    "Accounts_BQ_RAW",
-                    "Invoices_BQ_RAW",
-                    "Bills_BQ_RAW",
-                    "AccountTransactions_BQ_RAW",
+                    "Accounts_CODAT_BQ",
+                    "Invoices_CODAT_BQ",
+                    "Bills_CODAT_BQ",
+                    "AccountTransactions_CODAT_BQ",
                     // for CoBa HTTP Sink connector consumption
                     "Accounts_CoBa",
                     "Invoices_CoBa",

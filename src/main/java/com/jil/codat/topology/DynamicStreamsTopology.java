@@ -96,6 +96,14 @@ public class DynamicStreamsTopology {
                 })
                 .peek((key, value) -> log.info("Output Topic: {}. After transformation - Key: {}, Value: {}", outputTopic, key, value));
 
+//        // Create headers and add them to the produced records
+//        outputStream = outputStream.map((key, value) -> {
+//            Headers headers = new RecordHeaders();
+//            headers.add(new RecordHeader("correlationId", "123".getBytes()));
+//            headers.add(new RecordHeader("apiKey", "456".getBytes()));
+//            return KeyValue.pair(key, value).withHeaders(headers);
+//        });
+
         outputStream.to(outputTopic, Produced.with(Serdes.String(), prepareOutStreamSerdes(transformer)));
     }
 }

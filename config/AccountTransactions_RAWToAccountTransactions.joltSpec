@@ -8,5 +8,23 @@
         }
       }
     }
-  }
+  },
+     {
+       "operation": "default",
+       "spec": {
+         "companyId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+         "accounts[]": {
+           "*": {
+             "currency": "USD",
+             "validDatatypeLinks": [
+               {
+                 "property": "property1",
+                 "links": ["http://example.com/link"]
+               }
+             ]
+           }
+         },
+         "callbackUrl": "https://examples.lbg.com/solution/callback"
+       }
+     }
 ]
