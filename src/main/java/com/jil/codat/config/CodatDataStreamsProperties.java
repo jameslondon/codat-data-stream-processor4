@@ -14,5 +14,8 @@ import java.util.List;
 public class CodatDataStreamsProperties {
     @Value("${transformationStrategy.spec:#{null}}")
     private List<TopicConfig> topics;
+    //add code to print a line on console
+
 }
+
 

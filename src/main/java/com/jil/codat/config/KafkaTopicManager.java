@@ -37,6 +37,7 @@ public class KafkaTopicManager {
                     "AccountTransactions_CODAT_BQ",
                     // for CoBa HTTP Sink connector consumption
                     "Accounts_CoBa",
+                    "Accounts_CoBa2",
                     "Invoices_CoBa",
                     "Bills_CoBa",
                     "AccountTransactions_CoBa"

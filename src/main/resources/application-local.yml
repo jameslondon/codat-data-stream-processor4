@@ -34,6 +34,14 @@ data-stream-processor:
               companyIds:
                 - 3fa85f64-5717-4562-b3fc-2c963f66afa6
               status: Active
+        - produceTopic: Accounts_CoBa2
+          transformationStrategy:
+            transformer: AtlasMapTransformer
+            spec: file:/Users/jialiu9/Documents/Work/LBG-CD&A/codat-data-stream-processor4/config/Accounts_CODATToAccounts_CoBa2.adm
+            filter:
+              companyIds:
+                - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+              status: Active
     - consumeTopic: Invoices_CODAT
       mappings:
         - produceTopic: Invoices_CODAT_BQ
