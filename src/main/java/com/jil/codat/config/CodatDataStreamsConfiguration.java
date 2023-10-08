@@ -48,6 +48,11 @@ public class CodatDataStreamsConfiguration {
         // Enable idempotence for Kafka Streams' internal producer
         kafkaStreamsProperties.put("producer.enable.idempotence", "true");
 
+        // Increase the session timeout to 5 minutes
+        kafkaStreamsProperties.put("session.timeout.ms", "300000");
+
+        // Increase the max poll interval to 10 minutes
+        kafkaStreamsProperties.put("max.poll.interval.ms", "600000");
         return new KafkaStreamsConfiguration(kafkaStreamsProperties);
     }
 

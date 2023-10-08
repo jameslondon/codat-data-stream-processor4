@@ -42,6 +42,11 @@ public class AtlasMapTransformer implements MessageTransformer<String, String> {
     @Override
     public String transform(String inputJson) {
         log.info("Input JSON: " + inputJson);
+//        try {
+//            Thread.sleep(1000 * 60);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
         AtlasSession session;
         String firstSourceKey = null;
         String firstTargetKey = null;

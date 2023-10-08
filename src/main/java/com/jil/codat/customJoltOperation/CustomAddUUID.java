@@ -1,37 +1,58 @@
 package com.jil.codat.customJoltOperation;
 
+import com.bazaarvoice.jolt.SpecDriven;
 import com.bazaarvoice.jolt.Transform;
-import com.bazaarvoice.jolt.exception.SpecException;
 
+import javax.inject.Inject;
 import java.util.Map;
 import java.util.UUID;
 
-public class CustomAddUUID implements Transform {
+public class CustomAddUUID implements SpecDriven, Transform {
+
+    private final Object spec;
+
+    public CustomAddUUID() {
+        this.spec = null;
+    }
+
+    @Inject
+    public CustomAddUUID(Object spec) {
+        this.spec = spec;
+    }
 
     @Override
     public Object transform(Object input) {
-        if (!(input instanceof Map)) {
-            throw new SpecException("CustomAddUUID expected a Map input, but got: " + input.getClass().getSimpleName());
-        }
-
-        Map<String, Object> inputMap = (Map<String, Object>) input;
-        String key = getKeyForValue(inputMap, "CORRELATIONID");
-        if (key != null) {
-            System.out.println("The key for the value 'CORRELATIONID' is: " + key);
-            inputMap.replace(key, UUID.randomUUID().toString());
-        } else {
-            System.out.println("The value 'CORRELATIONID' is not present in the map.");
-        }
-        return inputMap;
+        processMap((Map<String, Object>) input, (Map<String, Object>) spec);
+        return input;
     }
 
-    public static String getKeyForValue(Map<String, Object> map, Object value) {
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (value.equals(entry.getValue())) {
-                return entry.getKey();
+    private void processMap(Map<String, Object> inputMap, Map<String, Object> specMap) {
+        for (String key : specMap.keySet()) {
+            Object specVal = specMap.get(key);
+            Object inputVal = inputMap.get(key);
+
+            // Check if current spec entry is a Map
+            if (specVal instanceof Map) {
+                // If the current spec entry wants to insert a timestamp
+                if (((Map) specVal).containsKey("UUID") && "true".equalsIgnoreCase(((Map) specVal).get("UUID").toString())) {
+                    String uuid = UUID.randomUUID().toString();
+                    if (inputVal instanceof Map) {
+                        ((Map) inputVal).put(((Map) specVal).get("key").toString(), uuid);
+                    } else {
+                        inputMap.put(((Map) specVal).get("key").toString(), uuid); // Add uuid at current level if inputVal is not a map
+                    }
+                } else if (inputVal instanceof Map) {
+                    // Otherwise, if the input has a nested Map at the current key, recurse
+                    processMap((Map<String, Object>) inputVal, (Map<String, Object>) specVal);
+                }
             }
         }
-        return null; // Return null if the value is not found in the map
+
+        // Specifically for root level timestamp
+        if (specMap.containsKey("UUID") && "true".equalsIgnoreCase(specMap.get("UUID").toString())) {
+            String uuid = UUID.randomUUID().toString();
+            inputMap.put(specMap.get("key").toString(), uuid);
+        }
     }
 
 }
